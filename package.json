@@ -1,0 +1,12 @@
+{
+  "name": "kinokuniya",
+  "version": "1.0.0",
+  "description": "E-commerce website for book store Kinokuniya",
+  "scripts": {
+    "server": "nodemon index.js",
+    "client": "cd frontend && npm start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "author": "Shakhzodbek Kakhkhorov",
+  "license": "ISC"
+}
