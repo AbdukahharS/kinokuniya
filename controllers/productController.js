@@ -47,6 +47,25 @@ const getProduct = async (req, res) => {
   res.status(200).json(product)
 }
 
+// update a product
+const updateProduct = async (req, res) => {
+  const { id } = req.params
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'No such product' })
+  }
+
+  const workout = await Product.findOneAndUpdate({ _id: id }, { ...req.body })
+
+  console.log(workout)
+
+  if (!workout) {
+    return res.status(404).json({ error: 'No such product' })
+  }
+
+  res.status(200).json(workout)
+}
+
 // delete a product
 const deleteProduct = async (req, res) => {
   const { id } = req.params
@@ -68,5 +87,6 @@ module.exports = {
   createProduct,
   getProducts,
   getProduct,
+  updateProduct,
   deleteProduct,
 }

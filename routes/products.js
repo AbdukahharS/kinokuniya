@@ -3,6 +3,7 @@ const {
   createProduct,
   getProducts,
   getProduct,
+  updateProduct,
   deleteProduct,
 } = require('../controllers/productController')
 
@@ -16,6 +17,9 @@ router.get('/', getProducts)
 
 // GET single product
 router.get('/:id', getProduct)
+
+// UPDATE a product
+router.patch('/:id', updateProduct)
 
 // DELETE a product
 router.delete('/:id', deleteProduct)
