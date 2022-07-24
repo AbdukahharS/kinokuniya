@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-// const fs = require('fs')
+const fs = require('fs')
 const Product = require('../models/productModel')
 const Author = require('../models/authorModel')
 const Category = require('../models/categoryModel')
@@ -114,6 +114,8 @@ const deleteProduct = async (req, res) => {
   }
 
   const product = await Product.findOneAndDelete({ _id: id })
+
+  fs.unlinkSync(product.img.replace('/static', './uploads'))
 
   if (!product) {
     return res.status(404).json({ error: 'No such product' })
