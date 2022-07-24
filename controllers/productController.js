@@ -95,6 +95,10 @@ const updateProduct = async (req, res) => {
     return res.status(404).json({ error: 'No such product' })
   }
 
+  if (req.body.categories) {
+    req.body.categories = req.body.categories.split(',')
+  }
+
   const newProduct = { ...req.body }
   if (file) newProduct.img = `/static/${file.filename}`
   const product = await Product.findOneAndUpdate({ _id: id }, newProduct)

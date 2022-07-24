@@ -1,7 +1,8 @@
 const Category = require('../models/categoryModel')
+const Product = require('../models/productModel')
 const mongoose = require('mongoose')
 
-// create a new author
+// create a new category
 const createCategory = async (req, res) => {
   const { title } = req.body
 
@@ -18,66 +19,82 @@ const createCategory = async (req, res) => {
   }
 }
 
-// // get all products
-// const getProducts = async (req, res) => {
-//   const products = await Product.find({}).sort({ createdAt: -1 })
+// get all categories
+const getCategories = async (req, res) => {
+  const categories = await Category.find({}).sort({ createdAt: -1 })
 
-//   res.status(200).json(products)
-// }
+  res.status(200).json(categories)
+}
 
-// // get a single product
-// const getProduct = async (req, res) => {
-//   const { id } = req.params
+// get a single category
+const getCategory = async (req, res) => {
+  const { id } = req.params
 
-//   if (!mongoose.Types.ObjectId.isValid(id)) {
-//     return res.status(404).json({ error: 'No such product' })
-//   }
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'No such category' })
+  }
 
-//   const product = await Product.findById(id)
+  const category = await Category.findById(id)
 
-//   if (!product) {
-//     return res.status(404).json({ error: 'No such product' })
-//   }
+  if (!category) {
+    return res.status(404).json({ error: 'No such category' })
+  }
 
-//   res.status(200).json(product)
-// }
+  res.status(200).json(category)
+}
 
-// // update a product
-// const updateProduct = async (req, res) => {
-//   const { id } = req.params
+// update a category
+const updateCategory = async (req, res) => {
+  const { id } = req.params
 
-//   if (!mongoose.Types.ObjectId.isValid(id)) {
-//     return res.status(404).json({ error: 'No such product' })
-//   }
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'No such product' })
+  }
 
-//   const workout = await Product.findOneAndUpdate({ _id: id }, { ...req.body })
+  const category = await Category.findOneAndUpdate({ _id: id }, { ...req.body })
 
-//   console.log(workout)
+  if (!category) {
+    return res.status(404).json({ error: 'No such category' })
+  }
 
-//   if (!workout) {
-//     return res.status(404).json({ error: 'No such product' })
-//   }
+  const updatedCategory = await Category.findById(id)
+  res.status(200).json(updatedCategory)
+}
 
-//   res.status(200).json(workout)
-// }
+// delete a category
+const deleteCategory = async (req, res) => {
+  const { id } = req.params
 
-// // delete a product
-// const deleteProduct = async (req, res) => {
-//   const { id } = req.params
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'No such product' })
+  }
 
-//   if (!mongoose.Types.ObjectId.isValid(id)) {
-//     return res.status(404).json({ error: 'No such product' })
-//   }
+  const category = await Category.findOneAndDelete({ _id: id })
 
-//   const product = await Product.findOneAndDelete({ _id: id })
+  if (!category) {
+    return res.status(404).json({ error: 'No such category' })
+  }
 
-//   if (!product) {
-//     return res.status(404).json({ error: 'No such product' })
-//   }
+  const products = await Product.find({})
 
-//   res.status(200).json(product)
-// }
+  products.forEach(async (product) => {
+    const ind = product.categories.indexOf(id)
+    if (ind !== -1) {
+      const newCategories = product.categories.splice(ind, 1)
+      const upProduct = await Product.findOneAndUpdate(
+        { _id: product.id },
+        { ...product, categories: newCategories }
+      )
+    }
+  })
+
+  res.status(200).json(category)
+}
 
 module.exports = {
   createCategory,
+  getCategories,
+  getCategory,
+  updateCategory,
+  deleteCategory,
 }
