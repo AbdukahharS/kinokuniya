@@ -6,11 +6,12 @@ const {
   updateProduct,
   deleteProduct,
 } = require('../controllers/productController')
+const upload = require('../middleware/multer')
 
 const router = express.Router()
 
 // POST a new product
-router.post('/', createProduct)
+router.post('/', upload.single('img'), createProduct)
 
 // GET all products
 router.get('/', getProducts)

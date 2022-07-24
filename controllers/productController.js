@@ -1,22 +1,61 @@
-const Product = require('../models/productModel')
 const mongoose = require('mongoose')
+// const fs = require('fs')
+const Product = require('../models/productModel')
+const Author = require('../models/authorModel')
+const Category = require('../models/categoryModel')
 
 // create a new product
 const createProduct = async (req, res) => {
-  const { name, price, desc, discount } = req.body
+  const { name, price, desc, author, discount, categories } = req.body
+  const { file } = req
 
   const emptyFields = []
 
   if (!name) emptyFields.push('name')
   if (!price) emptyFields.push('price')
   if (!desc) emptyFields.push('desc')
-  if (emptyFields.length > 0)
+  if (!author) emptyFields.push('author')
+  if (emptyFields.length > 0) {
     return res
       .status(400)
       .json({ error: 'All inputs must be filled in', emptyFields })
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(author)) {
+    return res.status(404).json({ error: 'No such author' })
+  }
+
+  const validateAuthor = await Author.findOne({ _id: author })
+  if (!validateAuthor) {
+    return res.status(404).json({ error: 'No such author' })
+  }
+
+  if (categories) {
+    categories.split(',').forEach(async (category) => {
+      if (!mongoose.Types.ObjectId.isValid(category)) {
+        return res
+          .status(404)
+          .json({ error: 'No such category with id ' + category })
+      }
+
+      const validateCategory = await Category.findById(category)
+      if (!validateCategory) {
+        return res.status(404).json('No such category with id ' + category)
+      }
+    })
+  }
+
   // add to the database
   try {
-    const product = await Product.create({ name, price, desc, discount })
+    const product = await Product.create({
+      name,
+      img: `/static/${file.filename}`,
+      price: Number(price),
+      desc,
+      author,
+      discount: discount ? discount : null,
+      categories: categories ? categories.split(',') : null,
+    })
     res.status(200).json(product)
   } catch (error) {
     res.status(400).json({ error: error.message })

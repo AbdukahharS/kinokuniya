@@ -2,12 +2,16 @@ require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const productRoutes = require('./routes/products')
+const authorRoutes = require('./routes/authors')
+const categoryRoutes = require('./routes/categories')
 
 // express app
 const app = express()
 
 //middleware
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use('/static', express.static('uploads'))
 app.use((req, res, next) => {
   console.log(req.path, req.method)
   next()
@@ -15,6 +19,8 @@ app.use((req, res, next) => {
 
 // routes
 app.use('/api/products', productRoutes)
+app.use('/api/authors', authorRoutes)
+app.use('/api/categories', categoryRoutes)
 
 // connect to DB
 mongoose

@@ -8,6 +8,15 @@ const productSchema = new Schema(
       type: String,
       required: true,
     },
+    img: {
+      type: String,
+      required: true,
+    },
+    author: {
+      type: mongoose.Types.ObjectId,
+      required: true,
+    },
+    categories: [mongoose.Types.ObjectId],
     price: {
       type: Number,
       required: true,
