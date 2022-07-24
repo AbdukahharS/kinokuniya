@@ -89,20 +89,25 @@ const getProduct = async (req, res) => {
 // update a product
 const updateProduct = async (req, res) => {
   const { id } = req.params
+  const { file } = req
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({ error: 'No such product' })
   }
 
-  const workout = await Product.findOneAndUpdate({ _id: id }, { ...req.body })
+  const newProduct = { ...req.body }
+  if (file) newProduct.img = `/static/${file.filename}`
+  const product = await Product.findOneAndUpdate({ _id: id }, newProduct)
 
-  console.log(workout)
+  if (file) fs.unlinkSync(product.img.replace('/static', './uploads'))
 
-  if (!workout) {
+  const updatedProduct = await Product.findById(product._id)
+
+  if (!updatedProduct) {
     return res.status(404).json({ error: 'No such product' })
   }
 
-  res.status(200).json(workout)
+  res.status(200).json(updatedProduct)
 }
 
 // delete a product

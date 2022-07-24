@@ -20,7 +20,7 @@ router.get('/', getProducts)
 router.get('/:id', getProduct)
 
 // UPDATE a product
-router.patch('/:id', updateProduct)
+router.patch('/:id', upload.single('img'), updateProduct)
 
 // DELETE a product
 router.delete('/:id', deleteProduct)
