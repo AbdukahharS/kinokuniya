@@ -1,27 +1,28 @@
 const express = require('express')
 const {
   createAuthor,
-  //   getProducts,
-  //   getProduct,
-  //   updateProduct,
-  //   deleteProduct,
+  getAuthors,
+  getAuthor,
+  updateAuthor,
+  deleteAuthor,
 } = require('../controllers/authorController')
+const upload = require('../middleware/multer')
 
 const router = express.Router()
 
 // POST a new author
-router.post('/', createAuthor)
+router.post('/', upload.single('img'), createAuthor)
 
-// GET all products
-// router.get('/', getProducts)
+// GET all authors
+router.get('/', getAuthors)
 
-// // GET single product
-// router.get('/:id', getProduct)
+// GET single author
+router.get('/:id', getAuthor)
 
-// // UPDATE a product
-// router.patch('/:id', updateProduct)
+// UPDATE an author
+router.patch('/:id', upload.single('img'), updateAuthor)
 
-// // DELETE a product
-// router.delete('/:id', deleteProduct)
+// DELETE an author
+router.delete('/:id', deleteAuthor)
 
 module.exports = router

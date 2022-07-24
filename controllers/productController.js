@@ -15,6 +15,7 @@ const createProduct = async (req, res) => {
   if (!price) emptyFields.push('price')
   if (!desc) emptyFields.push('desc')
   if (!author) emptyFields.push('author')
+  if (!file) emptyFields.push('file')
   if (emptyFields.length > 0) {
     return res
       .status(400)

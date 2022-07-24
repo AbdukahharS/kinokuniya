@@ -1,13 +1,17 @@
 const Author = require('../models/authorModel')
+const Product = require('../models/productModel')
+const fs = require('fs')
 const mongoose = require('mongoose')
 
 // create a new author
 const createAuthor = async (req, res) => {
   const { name, desc } = req.body
+  const { file } = req
 
   const emptyFields = []
 
   if (!name) emptyFields.push('name')
+  if (!file) emptyFields.push('file')
   if (!desc) emptyFields.push('desc')
   if (emptyFields.length > 0) {
     return res
@@ -20,6 +24,7 @@ const createAuthor = async (req, res) => {
     const author = await Author.create({
       name,
       desc,
+      img: `/static/${file.filename}`,
     })
     res.status(200).json(author)
   } catch (error) {
@@ -27,70 +32,89 @@ const createAuthor = async (req, res) => {
   }
 }
 
-// // get all products
-// const getProducts = async (req, res) => {
-//   const products = await Product.find({}).sort({ createdAt: -1 })
+// get all authors
+const getAuthors = async (req, res) => {
+  const authors = await Author.find({}).sort({ createdAt: -1 })
 
-//   res.status(200).json(products)
-// }
+  res.status(200).json(authors)
+}
 
-// // get a single product
-// const getProduct = async (req, res) => {
-//   const { id } = req.params
+// get a single author
+const getAuthor = async (req, res) => {
+  const { id } = req.params
 
-//   if (!mongoose.Types.ObjectId.isValid(id)) {
-//     return res.status(404).json({ error: 'No such product' })
-//   }
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'No such author' })
+  }
 
-//   const product = await Product.findById(id)
+  const author = await Author.findById(id)
 
-//   if (!product) {
-//     return res.status(404).json({ error: 'No such product' })
-//   }
+  if (!author) {
+    return res.status(404).json({ error: 'No such author' })
+  }
 
-//   res.status(200).json(product)
-// }
+  res.status(200).json(author)
+}
 
-// // update a product
-// const updateProduct = async (req, res) => {
-//   const { id } = req.params
+// update a product
+const updateAuthor = async (req, res) => {
+  const { id } = req.params
+  const { file } = req
 
-//   if (!mongoose.Types.ObjectId.isValid(id)) {
-//     return res.status(404).json({ error: 'No such product' })
-//   }
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'No such author' })
+  }
 
-//   const workout = await Product.findOneAndUpdate({ _id: id }, { ...req.body })
+  const newAuthor = { ...req.body }
+  if (file) newAuthor.img = `/static/${file.filename}`
+  const author = await Author.findOneAndUpdate({ _id: id }, newAuthor)
 
-//   console.log(workout)
+  if (file) fs.unlinkSync(author.img.replace('/static', './uploads'))
 
-//   if (!workout) {
-//     return res.status(404).json({ error: 'No such product' })
-//   }
+  if (!author) {
+    return res.status(404).json({ error: 'No such author' })
+  }
 
-//   res.status(200).json(workout)
-// }
+  const updatedAuthor = await Author.findById(id)
 
-// // delete a product
-// const deleteProduct = async (req, res) => {
-//   const { id } = req.params
+  res.status(200).json(updatedAuthor)
+}
 
-//   if (!mongoose.Types.ObjectId.isValid(id)) {
-//     return res.status(404).json({ error: 'No such product' })
-//   }
+// delete a author
+const deleteAuthor = async (req, res) => {
+  const { id } = req.params
 
-//   const product = await Product.findOneAndDelete({ _id: id })
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'No such author' })
+  }
 
-//   if (!product) {
-//     return res.status(404).json({ error: 'No such product' })
-//   }
+  const products = await Product.find({ author: id })
+  if (products.length) {
+    const ids = products.map((prod) => {
+      return prod._id
+    })
+    return res.status(400).json({
+      error:
+        'There are products with this author. To delete this one, you need to change authors of these products: ' +
+        ids,
+    })
+  }
 
-//   res.status(200).json(product)
-// }
+  const author = await Author.findOneAndDelete({ _id: id })
+
+  fs.unlinkSync(author.img.replace('/static', './uploads'))
+
+  if (!author) {
+    return res.status(404).json({ error: 'No such author' })
+  }
+
+  res.status(200).json(author)
+}
 
 module.exports = {
   createAuthor,
-  //   getProducts,
-  //   getProduct,
-  //   updateProduct,
-  //   deleteProduct,
+  getAuthors,
+  getAuthor,
+  updateAuthor,
+  deleteAuthor,
 }
