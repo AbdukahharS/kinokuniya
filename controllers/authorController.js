@@ -56,7 +56,7 @@ const getAuthor = async (req, res) => {
   res.status(200).json(author)
 }
 
-// update a product
+// update an author
 const updateAuthor = async (req, res) => {
   const { id } = req.params
   const { file } = req
@@ -80,7 +80,7 @@ const updateAuthor = async (req, res) => {
   res.status(200).json(updatedAuthor)
 }
 
-// delete a author
+// delete an author
 const deleteAuthor = async (req, res) => {
   const { id } = req.params
 
