@@ -2,6 +2,11 @@ const mongoose = require('mongoose')
 
 const Schema = mongoose.Schema
 
+const itemSchema = new Schema({
+  product: { type: mongoose.Types.ObjectId, required: true },
+  entity: { type: Number, required: true },
+})
+
 const userSchema = new Schema(
   {
     fullname: {
@@ -17,9 +22,14 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+      enum: ['customer', 'admin'],
+      default: 'customer',
+    },
     cart: {
-      type: mongoose.Types.ObjectId,
-      default: null,
+      type: [itemSchema],
+      default: [],
     },
   },
   { timestamps: true }
