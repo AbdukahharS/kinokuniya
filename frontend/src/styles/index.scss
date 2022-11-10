@@ -1,0 +1,71 @@
+$primary: #008dff;
+$secondary: #00cd98;
+$danger: #ff0000;
+$warning: #ff9800;
+$dim: #f4f7fd;
+$dark: #212529;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
+}
+
+button {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  background: transparent;
+}
+
+a {
+  text-decoration: none;
+}
+
+body {
+  background: $dim;
+  color: $dark;
+}
+
+.container {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.hover {
+  display: inline-block;
+  text-transform: uppercase;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+  }
+  &:before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    transition: all 0.3s;
+    z-index: -1;
+    background-color: darken(#fff, 15%);
+  }
+  &:hover {
+    &:before {
+      width: 100%;
+    }
+  }
+}
+
+@import 'navbar';

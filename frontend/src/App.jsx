@@ -6,6 +6,7 @@ import Home from './pages/Home'
 // Components
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import './styles/index.scss'
 
 function App() {
   return (

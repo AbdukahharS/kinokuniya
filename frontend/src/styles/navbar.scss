@@ -1,0 +1,67 @@
+.navbar {
+  background: #fff;
+  width: 100%;
+  height: fit-content;
+
+  .container {
+    padding: 1.4rem 1.8rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+
+    .logo {
+      width: 200px;
+    }
+
+    .search {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      height: fit-content;
+      background: $primary;
+      border-radius: 0.8rem;
+      transition: 0.2s ease-out;
+
+      &:hover {
+        background-color: darken($primary, 15%);
+      }
+
+      input {
+        font-size: 1rem;
+        width: 100%;
+        border: 2.5px solid $primary;
+        border-radius: 0.8rem;
+        color: $primary;
+        padding: 0.6rem 0.4rem;
+        outline: none;
+      }
+
+      button {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        color: #fff;
+        padding: 0 0.6rem;
+        font-size: 1rem;
+      }
+    }
+
+    .actions {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.2rem;
+
+      button {
+        font-size: 2.2rem;
+        color: $dark;
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}
