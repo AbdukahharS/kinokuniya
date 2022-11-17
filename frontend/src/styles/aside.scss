@@ -1,0 +1,45 @@
+aside {
+  width: 25%;
+  min-width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+
+  .filter {
+    background: #fff;
+    border-radius: 16px;
+    width: 100%;
+    padding: 1rem 0;
+
+    .filterName {
+      color: $dimText;
+      font-weight: 600;
+      padding: 6px 25px;
+    }
+
+    .filterItems {
+      width: 100%;
+
+      .filterItem {
+        width: 100%;
+        padding: 10px 25px;
+        border-bottom: 2px solid $dim;
+        font-weight: 500;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+
+        input {
+          outline: none;
+          cursor: pointer;
+        }
+
+        label {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

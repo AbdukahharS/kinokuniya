@@ -3,6 +3,7 @@ $secondary: #00cd98;
 $danger: #ff0000;
 $warning: #ff9800;
 $dim: #f4f7fd;
+$dimText: #858997;
 $dark: #212529;
 
 * {
@@ -26,6 +27,18 @@ a {
 body {
   background: $dim;
   color: $dark;
+}
+
+main {
+  width: 100%;
+  padding: 4rem 0;
+
+  .container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 3rem;
+  }
 }
 
 .container {
@@ -68,4 +81,4 @@ body {
   }
 }
 
-@import 'navbar';
+@import 'navbar', 'aside';
