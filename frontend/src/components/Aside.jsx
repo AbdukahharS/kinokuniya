@@ -1,28 +1,59 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 
 const Aside = () => {
+  const [categories, setCategories] = useState([])
+  const [authors, setAuthors] = useState([])
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const res = await fetch('/api/categories')
+      const json = await res.json()
+
+      if (res.ok) {
+        setCategories(json)
+      }
+      console.log(json)
+    }
+
+    const fetchAuthors = async () => {
+      const res = await fetch('/api/authors')
+      const json = await res.json()
+
+      if (res.ok) {
+        setAuthors(json)
+      }
+      console.log(json)
+    }
+
+    fetchCategories()
+    fetchAuthors()
+  }, [setCategories, setAuthors])
+
   return (
     <aside>
       <div className='filter'>
         <p className='filterName'>Categories</p>
         <div className='filterItems'>
-          <div className='filterItem'>
-            <input type='checkbox' />
-            <label>Asaxiy Books kitoblari (39)</label>
-          </div>
-          <div className='filterItem'>
-            <input type='checkbox' />
-            <label>Badiiy adabiyotlar (2025)</label>
-          </div>
-          <div className='filterItem'>
-            <input type='checkbox' />
-            <label>Psixologiya va shaxsiy rivojlanish (480)</label>
-          </div>
+          {categories.length &&
+            categories.map((category, i) => (
+              <div className='filterItem' key={i}>
+                <input type='checkbox' id={`category${i}`} />
+                <label htmlFor={`category${i}`}>{category.title}</label>
+              </div>
+            ))}
         </div>
       </div>
       <div className='filter'>
         <p className='filterName'>Authors</p>
-        <div className='filterItems'></div>
+        <div className='filterItems'>
+          {authors.length &&
+            authors.map((author, i) => (
+              <div className='filterItem' key={i}>
+                <input type='checkbox' id={`author${i}`} />
+                <label htmlFor={`author${i}`}>{author.name}</label>
+              </div>
+            ))}
+        </div>
       </div>
       <div className='filter'>
         <p className='filterName'>Language</p>
