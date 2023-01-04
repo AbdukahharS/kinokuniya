@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 import { useProductContext } from '../hooks/useProductContext'
 import Controllers from './Controllers'
 import Pagination from './Pagination'
+import { MdFavoriteBorder, MdFavorite } from 'react-icons/md'
 
 const Section = () => {
   const { products, dispatch } = useProductContext()
@@ -20,17 +21,23 @@ const Section = () => {
     fetchProducts()
   }, [dispatch])
 
-  console.log(products)
-
   return (
     <section>
       <Controllers />
       <div id='cards'>
         {products &&
           products.map((p) => (
-            <div key={p._id}>
+            <div className='card' key={p._id}>
               <img src={p.img} alt={p.name} />
-              <p>{p.name}</p>
+              <p className='name'>{p.name}</p>
+              <p>${p.price}</p>
+              <div className='buttons'>
+                <button className='cart'>Add to cart</button>
+                <button className='buy'>Buy now</button>
+              </div>
+              <button className='favorite'>
+                <MdFavoriteBorder />
+              </button>
             </div>
           ))}
       </div>

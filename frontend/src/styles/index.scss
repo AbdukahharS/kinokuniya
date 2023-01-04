@@ -29,6 +29,8 @@ body {
   color: $dark;
 }
 
+@import 'navbar';
+
 main {
   width: 100%;
   padding: 4rem 0;
@@ -39,6 +41,7 @@ main {
     align-items: flex-start;
     gap: 3rem;
   }
+  @import 'aside', 'section';
 }
 
 .container {
@@ -80,5 +83,3 @@ main {
     }
   }
 }
-
-@import 'navbar', 'aside';
