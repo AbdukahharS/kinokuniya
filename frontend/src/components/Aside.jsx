@@ -12,7 +12,6 @@ const Aside = () => {
       if (res.ok) {
         setCategories(json)
       }
-      console.log(json)
     }
 
     const fetchAuthors = async () => {
@@ -22,7 +21,6 @@ const Aside = () => {
       if (res.ok) {
         setAuthors(json)
       }
-      console.log(json)
     }
 
     fetchCategories()

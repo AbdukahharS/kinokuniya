@@ -13,7 +13,7 @@ const productSchema = new Schema(
       required: true,
     },
     author: {
-      type: mongoose.Types.ObjectId,
+      type: String,
       required: true,
     },
     categories: [mongoose.Types.ObjectId],

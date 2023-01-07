@@ -22,11 +22,7 @@ const createProduct = async (req, res) => {
       .json({ error: 'All inputs must be filled in', emptyFields })
   }
 
-  if (!mongoose.Types.ObjectId.isValid(author)) {
-    return res.status(404).json({ error: 'No such author' })
-  }
-
-  const validateAuthor = await Author.findOne({ _id: author })
+  const validateAuthor = await Author.findOne({ name: author })
   if (!validateAuthor) {
     return res.status(404).json({ error: 'No such author' })
   }

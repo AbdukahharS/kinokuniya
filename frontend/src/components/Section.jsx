@@ -29,7 +29,9 @@ const Section = () => {
           products.map((p) => (
             <div className='card' key={p._id}>
               <img src={p.img} alt={p.name} />
-              <p className='name'>{p.name}</p>
+              <p className='name'>
+                {p.author}: {p.name}
+              </p>
               <p>${p.price}</p>
               <div className='buttons'>
                 <button className='cart'>Add to cart</button>
